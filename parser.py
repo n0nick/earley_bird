@@ -31,7 +31,8 @@ class Parser:
             rules = self.grammar[next_cat]
             if rules:
                 for rule in rules:
-                    chart.add_row(ChartRow(rule, 0, position))
+                    new = ChartRow(rule, 0, position, row)
+                    chart.add_row(new)
 
     def complete(self, chart, position):
         for row in chart.rows:
@@ -39,7 +40,7 @@ class Parser:
                 completed = row.rule.lhs
                 for r in self.charts[row.start].rows:
                     if completed == r.next_category():
-                        new = ChartRow(r.rule, r.dot+1, r.start)
+                        new = ChartRow(r.rule, r.dot+1, r.start, row)
                         chart.add_row(new)
 
     def parse(self):

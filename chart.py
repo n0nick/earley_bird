@@ -20,11 +20,12 @@ class Chart:
             self.rows.append(row)
 
 class ChartRow:
-    def __init__(self, rule, dot=0, start=0):
+    def __init__(self, rule, dot=0, start=0, parent=None):
         self.rule = rule
         self.length = len(rule)
         self.dot = dot
         self.start = start
+        self.parent = parent
 
     def __repr__(self):
         rhs = list(self.rule.rhs)

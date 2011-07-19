@@ -14,7 +14,7 @@ class Rule:
         return len(self.rhs)
 
     def __str__(self):
-        return "{0} -> {1}".format(self.lhs, ' | '.join(self.rhs))
+        return "{0} -> {1}".format(self.lhs, ' '.join(self.rhs))
 
     def __getitem__(self, item):
         return self.rhs[item]
@@ -48,13 +48,13 @@ class Grammar:
             for outcome in rule[1].split('|'):
                 symbols = outcome.strip().split(' ')
                 r = Rule(lhs, symbols, self)
+                self.add_rule(r)
+
                 for sym in symbols:
                     self.symbols.add(sym)
 
             self.nonterminals.add(lhs)
             self.symbols.add(lhs)
-
-            self.add_rule(r)
        
         self.terminals = self.symbols.difference(self.nonterminals)
 
@@ -63,7 +63,7 @@ class Grammar:
     def add_rule(self, rule):
         lhs = rule.lhs
         if lhs in self.grammar:
-            self.grammar[lhs].extend(rule)
+            self.grammar[lhs].append(rule)
         else:
             self.grammar[lhs] = [rule]
 

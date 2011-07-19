@@ -12,16 +12,8 @@ class Chart:
     def __str__(self):
         return '\n'.join(str(r) for r in self.rows)
 
-    def has_row(self, row): #TODO
-        res = False
-        for r in self.rows:
-            if row == r:
-                res = True
-                break
-        return res
-
     def add_row(self, row):
-        if not self.has_row(row):
+        if not row in self.rows:
             self.rows.append(row)
 
 class ChartRow:

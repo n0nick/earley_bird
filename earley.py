@@ -25,6 +25,7 @@ def run():
     earley = Parser(grammar, sentence)
     earley.parse()
 
+    routes = earley.routes()
     # print results
     # print_trees(trees)
 

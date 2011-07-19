@@ -15,17 +15,29 @@ class Chart:
         st+= '\n</Chart>'
         return st
 
-    def add_row(self, row):
+    def add_row(self, row, parent=None):
         if not row in self.rows:
             self.rows.append(row)
+        if parent:
+            self.rows[self.rows.index(row)].add_parent(parent)
+
+    def scan_routes(self):
+        from parser import Parser
+        for r in self.rows:
+            if r.start == 0:
+                if r.is_complete():
+                    if r.rule.lhs == Parser.GAMMA_SYMBOL:
+                        r.mark_route()
+
 
 class ChartRow:
-    def __init__(self, rule, dot=0, start=0, parent=None):
+    def __init__(self, rule, dot=0, start=0):
         self.rule = rule
         self.length = len(rule)
         self.dot = dot
         self.start = start
-        self.parent = parent
+        self.good = False
+        self.parents = []
 
     def __repr__(self):
         rhs = list(self.rule.rhs)
@@ -50,4 +62,14 @@ class ChartRow:
             return self.rule[self.dot]
         else:
             return None
+
+    def add_parent(self, parent):
+        if not parent in self.parents:
+            self.parents.append(parent)
+
+    def mark_route(self):
+        self.good = True
+        print self
+        for parent in self.parents:
+            parent.mark_route()
 

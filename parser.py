@@ -15,7 +15,7 @@ class Parser:
         self.charts = [Chart([]) for i in range(self.length+1)]
 
     def init_first_chart(self):
-        row = ChartRow(Rule(self.GAMMA_SYMBOL, ['S']), 0, 0)
+        row = ChartRow(Rule(Parser.GAMMA_SYMBOL, ['S']), 0, 0)
         self.charts[0].add_row(row)
 
     def prescan(self, chart, position):
@@ -31,8 +31,8 @@ class Parser:
             rules = self.grammar[next_cat]
             if rules:
                 for rule in rules:
-                    new = ChartRow(rule, 0, position, row)
-                    chart.add_row(new)
+                    new = ChartRow(rule, 0, position)
+                    chart.add_row(new, row)
 
     def complete(self, chart, position):
         for row in chart.rows:
@@ -40,8 +40,8 @@ class Parser:
                 completed = row.rule.lhs
                 for r in self.charts[row.start].rows:
                     if completed == r.next_category():
-                        new = ChartRow(r.rule, r.dot+1, r.start, row)
-                        chart.add_row(new)
+                        new = ChartRow(r.rule, r.dot+1, r.start)
+                        chart.add_row(new, row)
 
     def parse(self):
         self.init_first_chart()
@@ -65,4 +65,7 @@ class Parser:
             print "---------------------------".format(i)
 
             i+= 1
+
+    def routes(self):
+        self.charts[-1].scan_routes()
 

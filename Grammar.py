@@ -5,10 +5,9 @@
 import sys
 
 class Rule:
-    def __init__(self, lhs, rhs, grammar):
+    def __init__(self, lhs, rhs):
         self.lhs = lhs
         self.rhs = rhs
-        self.grammar = grammar
 
     def __len__(self):
         return len(self.rhs)
@@ -19,24 +18,46 @@ class Rule:
     def __getitem__(self, item):
         return self.rhs[item]
 
-    def is_terminal(self):
-        return len(self) == 1 and self.rhs[0] in self.grammar.terminals
+    def __cmp__(self, other):
+        if self.lhs == other.lhs:
+            if self.rhs == other.rhs:
+                return 0
+        return 1
 
 class Grammar:
     def __init__(self):
-        self.grammar = {}
-        self.symbols = set()
-        self.terminals = set()
-        self.nonterminals = set()
+        self.rules = {}
 
-    def readfile(self, filename):
+    def __str__(self):
+        st = ''
+        for group in self.rules.values():
+            for rule in group:
+                st+= str(rule) + '\n'
+        return st
+
+    def __getitem__(self, lhs):
+        if lhs in self.rules:
+            return self.rules[lhs]
+        else:
+            return None
+
+    def add_rule(self, rule):
+        lhs = rule.lhs
+        if lhs in self.rules:
+            self.rules[lhs].append(rule)
+        else:
+            self.rules[lhs] = [rule]
+
+    @staticmethod
+    def from_file(filename):
         "reads grammar from file"
-        # TODO move this out of here
         try:
             lines = file(filename)
         except IOError as e:
             sys.stderr.write("Error reading file {0}\n".format(filename))
             sys.exit(1)
+
+        grammar = Grammar()
 
         for line in lines:
             if line[0] == '#' or len(line) < 3: # comment
@@ -47,29 +68,8 @@ class Grammar:
             lhs = rule[0].strip()
             for outcome in rule[1].split('|'):
                 symbols = outcome.strip().split(' ')
-                r = Rule(lhs, symbols, self)
-                self.add_rule(r)
+                r = Rule(lhs, symbols)
+                grammar.add_rule(r)
 
-                for sym in symbols:
-                    self.symbols.add(sym)
-
-            self.nonterminals.add(lhs)
-            self.symbols.add(lhs)
-       
-        self.terminals = self.symbols.difference(self.nonterminals)
-
-        return self
-
-    def add_rule(self, rule):
-        lhs = rule.lhs
-        if lhs in self.grammar:
-            self.grammar[lhs].append(rule)
-        else:
-            self.grammar[lhs] = [rule]
-
-    def rules_for(self, lhs):
-        if lhs in self.grammar:
-            return self.grammar[lhs]
-        else:
-            return None
+        return grammar
 

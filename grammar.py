@@ -60,7 +60,9 @@ class Grammar:
         grammar = Grammar()
 
         for line in lines:
-            if line[0] == '#' or len(line) < 3: # comment
+            # ignore comments
+            line = line[0:line.find('#')]
+            if len(line) < 3:
                 continue
 
             # lhs -> outcome | outcome | outcome

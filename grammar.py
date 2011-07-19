@@ -67,7 +67,8 @@ class Grammar:
             rule = line.split('->')
             lhs = rule[0].strip()
             for outcome in rule[1].split('|'):
-                symbols = outcome.strip().split(' ')
+                rhs = outcome.strip()
+                symbols = rhs.split(' ') if rhs else []
                 r = Rule(lhs, symbols)
                 grammar.add_rule(r)
 

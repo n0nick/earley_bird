@@ -24,7 +24,6 @@ def run():
     # run parser
     earley = Parser(grammar, sentence)
     earley.parse()
-    #trees = earley.parse()
 
     # print results
     # print_trees(trees)

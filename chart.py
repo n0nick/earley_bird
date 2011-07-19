@@ -9,8 +9,11 @@ class Chart:
     def __len__(self):
         return len(self.rows)
 
-    def __str__(self):
-        return '\n'.join(str(r) for r in self.rows)
+    def __repr__(self):
+        st = '<Chart>\n\t'
+        st+= '\n\t'.join(str(r) for r in self.rows)
+        st+= '\n</Chart>'
+        return st
 
     def add_row(self, row):
         if not row in self.rows:
@@ -23,10 +26,12 @@ class ChartRow:
         self.dot = dot
         self.start = start
 
-    def __str__(self):
-        rule_str = str(self.rule).split(' ')
-        rule_str.insert(self.dot + 2, '*')
-        return "<row {0} [{1}]>".format(' '.join(rule_str), self.start)
+    def __repr__(self):
+        rhs = list(self.rule.rhs)
+        rhs.insert(self.dot, '*')
+        rule_str = "[{0} -> {1}]".format(self.rule.lhs, ' '.join(rhs))
+
+        return "<Row {0} [{1}]>".format(rule_str, self.start)
 
     def __cmp__(self, other):
         if self.length == other.length:

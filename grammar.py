@@ -12,8 +12,8 @@ class Rule:
     def __len__(self):
         return len(self.rhs)
 
-    def __str__(self):
-        return "{0} -> {1}".format(self.lhs, ' '.join(self.rhs))
+    def __repr__(self):
+        return "<Rule {0} -> {1}>".format(self.lhs, ' '.join(self.rhs))
 
     def __getitem__(self, item):
         return self.rhs[item]
@@ -28,11 +28,12 @@ class Grammar:
     def __init__(self):
         self.rules = {}
 
-    def __str__(self):
-        st = ''
+    def __repr__(self):
+        st = '<Grammar>\n'
         for group in self.rules.values():
             for rule in group:
-                st+= str(rule) + '\n'
+                st+= '\t{0}\n'.format(str(rule))
+        st+= '</Grammar>'
         return st
 
     def __getitem__(self, lhs):

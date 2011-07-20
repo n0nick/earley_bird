@@ -23,34 +23,34 @@ class Chart:
 
     def scan_routes(self, debug=False):
         from parser import Parser
-        if debug:
-            print "Scanning final routes..."        
 
-        for r in self.rows:
-            if r.start == 0:
-                if r.is_complete():
-                    if r.rule.lhs == Parser.GAMMA_SYMBOL:
-                        r.mark_route(debug)
+        for row in self.rows:
+            rule = row.rule
+            if rule.lhs == Parser.GAMMA_SYMBOL:
+                if row.start == 0:  
+                    if row.is_complete():
+                        row.mark_route(debug)
 
 
 class ChartRow:
     def __init__(self, rule, dot=0, start=0):
         self.rule = rule
-        self.length = len(rule)
         self.dot = dot
         self.start = start
         self.good = False
         self.parents = []
 
+    def __len__(self):
+        return len(self.rule)
+
     def __repr__(self):
         rhs = list(self.rule.rhs)
         rhs.insert(self.dot, '*')
         rule_str = "[{0} -> {1}]".format(self.rule.lhs, ' '.join(rhs))
-
         return "<Row {0} [{1}]>".format(rule_str, self.start)
 
     def __cmp__(self, other):
-        if self.length == other.length:
+        if len(self) == len(other):
             if self.dot == other.dot:
                 if self.start == other.start:
                     if self.rule == other.rule:
@@ -58,10 +58,10 @@ class ChartRow:
         return 1
 
     def is_complete(self):
-        return self.length == self.dot
+        return len(self) == self.dot
 
     def next_category(self):
-        if self.dot < self.length:
+        if self.dot < len(self):
             return self.rule[self.dot]
         else:
             return None

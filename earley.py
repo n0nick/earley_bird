@@ -13,8 +13,14 @@ def run():
         print "Usage: earley.py <grammar.cfg> <sentence> [--debug]"
         sys.exit(1)
 
-    # load grammar from file, sentence from arguments
-    grammar = Grammar.from_file(sys.argv[1])
+    # load grammar from file
+    try:
+        grammar = Grammar.from_file(sys.argv[1])
+    except IOError as e: #TODO: just raise an exception here
+        sys.stderr.write("Error reading file {0}\n".format(sys.argv[1]))
+        sys.exit(1)
+
+    # parse input sentence
     sentence = Sentence.from_string(sys.argv[2])
 
     debug = len(sys.argv)==4 and sys.argv[3] == '--debug'

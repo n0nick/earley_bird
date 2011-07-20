@@ -28,11 +28,13 @@ class TreeNode:
 class ParseTrees:
     def __init__(self, routes, length):
         from parser import Parser
+
         self.routes = routes
         self.length = length
         self.nodes = []
+        self.root = self.routes[Parser.GAMMA_SYMBOL]
 
-        self.nodes = self.build_nodes(Parser.GAMMA_SYMBOL)
+        self.nodes = self.build_nodes(self.root)
 
     def __str__(self):
         st = []
@@ -40,19 +42,17 @@ class ParseTrees:
             st.append("Parse tree #{0}:\n{1}\n\n".format(i+1, str(self.nodes[i])))
         return '\n'.join(st)
 
-    def build_nodes(self, symbol):
+    def build_nodes(self, roots):
         nodes = []
-        if not self.routes.get(symbol): # terminal symbol - a leaf
-            nodes.append(TreeNode(symbol))
-        else:
-            root = self.routes[symbol]
+        for r in roots:
+            children = []
+            for right in r.rule.rhs:
+                if self.routes.get(right):
+                    children.extend(self.build_nodes(self.routes[right]))
+                else: # terminal symbol - a leaf
+                    children.append(TreeNode(right))
 
-            for r in root:
-                children = []
-                for child in r.rule.rhs:
-                    children.extend(self.build_nodes(child))
-
-                node = TreeNode(r.rule.lhs, children)
-                nodes.append(node)
+            node = TreeNode(r.rule.lhs, children)
+            nodes.append(node)
 
         return nodes

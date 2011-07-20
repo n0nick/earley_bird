@@ -8,11 +8,6 @@ from sentence import *
 from parser import *
 from parse_trees import *
 
-def print_trees(trees):
-    if trees:
-        for tree in trees:
-            print tree
-
 def run():
     if len(sys.argv)<3:
         print "Usage: earley.py <grammar.cfg> <sentence> [--debug]"
@@ -24,13 +19,13 @@ def run():
     debug = len(sys.argv)==4 and sys.argv[3] == '--debug'
 
     # run parser
-    earley = Parser(grammar, sentence)
-    earley.parse(debug)
+    earley = Parser(grammar, sentence, debug)
+    earley.parse()
 
-    routes = earley.find_routes(debug)
+    routes = earley.find_routes()
     if earley.is_valid_sentence():
         print '==> Sentence is valid.'
-        trees = ParseTrees(routes, len(sentence), debug)
+        trees = ParseTrees(routes, len(sentence))
         print 'Valid parse trees:'
         print trees
     else:

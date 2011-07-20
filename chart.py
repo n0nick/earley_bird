@@ -19,15 +19,15 @@ class Chart:
         if not row in self.rows:
             self.rows.append(row)
 
-    def scan_routes(self, debug=False):
+    def scan_routes(self):
         from parser import Parser
 
         for row in self.rows:
             rule = row.rule
             if rule.lhs == Parser.GAMMA_SYMBOL:
-                if row.start == 0:  
+                if row.start == 0:
                     if row.is_complete():
-                        row.mark_route(debug)
+                        row.mark_route()
 
 
 class ChartRow:
@@ -68,8 +68,8 @@ class ChartRow:
         if not parent in self.parents:
             self.parents.append(parent)
 
-    def mark_route(self, debug=False):
+    def mark_route(self):
         self.good = True
         for parent in self.parents:
-            parent.mark_route(debug)
+            parent.mark_route()
 

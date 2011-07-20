@@ -26,7 +26,7 @@ class TreeNode:
         return len(self.children) == 0
 
 class ParseTrees:
-    def __init__(self, routes, length, debug):
+    def __init__(self, routes, length):
         from parser import Parser
         self.routes = routes
         self.length = length
@@ -42,7 +42,7 @@ class ParseTrees:
 
     def build_nodes(self, symbol):
         nodes = []
-        if not self.routes.get(symbol):
+        if not self.routes.get(symbol): # terminal symbol - a leaf
             nodes.append(TreeNode(symbol))
         else:
             root = self.routes[symbol]
@@ -54,5 +54,5 @@ class ParseTrees:
 
                 node = TreeNode(r.rule.lhs, children)
                 nodes.append(node)
-        
+
         return nodes

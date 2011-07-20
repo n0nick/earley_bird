@@ -8,11 +8,12 @@ from grammar import *
 class Parser:
     GAMMA_SYMBOL = 'GAMMA'
 
-    def __init__(self, grammar, sentence):
+    def __init__(self, grammar, sentence, debug=False):
         self.grammar = grammar
         self.sentence = sentence
         self.length = len(sentence)
         self.charts = [Chart([]) for i in range(self.length+1)]
+        self.debug = debug
         self.routes = None
 
     def init_first_chart(self):
@@ -44,7 +45,7 @@ class Parser:
                         new = ChartRow(r.rule, r.dot+1, r.start, [row, r])
                         chart.add_row(new)
 
-    def parse(self, debug=False):
+    def parse(self):
         self.init_first_chart()
 
         i = 0
@@ -61,17 +62,17 @@ class Parser:
                 old_length = length
                 length = len(chart)
 
-            i+= 1              
-        
-        if debug:
+            i+= 1
+
+        if self.debug:
             self.print_charts()
 
-    def find_routes(self, debug=False):
+    def find_routes(self):
         if self.routes:
             return self.routes
 
         self.routes = {}
-        self.charts[-1].scan_routes(debug)
+        self.charts[-1].scan_routes()
         for chart in self.charts:
             for row in chart.rows:
                 if row.good:
@@ -82,7 +83,7 @@ class Parser:
                         else:
                             self.routes[key] = [row]
 
-        if debug:
+        if self.debug:
             print "Scanned 'good' routes:"
             print self.routes
             print "-----------------------"

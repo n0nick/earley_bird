@@ -10,7 +10,7 @@ from parse_trees import *
 
 def run():
     if len(sys.argv)<3:
-        print "Usage: earley.py <grammar.cfg> <sentence> [--debug]"
+        sys.stderr.write("Usage: earley.py <grammar.cfg> <sentence> [--debug]\n")
         sys.exit(1)
 
     # load grammar from file
@@ -23,12 +23,14 @@ def run():
     # parse input sentence
     sentence = Sentence.from_string(sys.argv[2])
 
+    # debug flag
     debug = len(sys.argv)==4 and sys.argv[3] == '--debug'
 
     # run parser
     earley = Parser(grammar, sentence, debug)
     earley.parse()
 
+    # find and print validity, parse trees
     routes = earley.find_routes()
     if earley.is_valid_sentence():
         print '==> Sentence is valid.'

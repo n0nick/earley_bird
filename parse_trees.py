@@ -40,11 +40,13 @@ class ParseTrees:
 
         self.nodes = self.build_nodes(self.root)
 
+    def __len__(self):
+        '''Trees count'''
+        return len(self.nodes)
+
     def __str__(self):
-        st = []
-        for i in range(len(self.nodes)):
-            st.append("Parse tree #{0}:\n{1}\n\n".format(i+1, str(self.nodes[i])))
-        return '\n'.join(st)
+        '''String representation of a list of trees with indexes'''
+        return '\n'.join("Parse tree #{0}:\n{1}\n\n".format(i+1, str(self.nodes[i])) for i in range(len(self)))
 
     def build_nodes(self, roots):
         nodes = []

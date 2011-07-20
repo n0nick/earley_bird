@@ -13,6 +13,7 @@ class Parser:
         self.sentence = sentence
         self.length = len(sentence)
         self.charts = [Chart([]) for i in range(self.length+1)]
+        self.routes = None
 
     def init_first_chart(self):
         row = ChartRow(Rule(Parser.GAMMA_SYMBOL, ['S']), 0, 0)
@@ -65,25 +66,32 @@ class Parser:
         if debug:
             self.print_charts()
 
-    def routes(self, debug):
+    def find_routes(self, debug=False):
+        if self.routes:
+            return self.routes
+
+        self.routes = {}
         self.charts[-1].scan_routes(debug)
-        routes = {}
         for chart in self.charts:
             for row in chart.rows:
                 if row.good:
                     if row.is_complete():
                         key = row.rule.lhs
-                        if routes.get(key):
-                            routes[key].append(row)
+                        if self.routes.get(key):
+                            self.routes[key].append(row)
                         else:
-                            routes[key] = [row]
+                            self.routes[key] = [row]
 
         if debug:
             print "Scanned 'good' routes:"
-            print routes
+            print self.routes
             print "-----------------------"
 
-        return routes
+        return self.routes
+
+    def is_valid_sentence(self):
+        routes = self.find_routes()
+        return len(routes.keys()) > 0
 
     def print_charts(self):
         print "Parsing charts:"

@@ -27,11 +27,14 @@ def run():
     earley = Parser(grammar, sentence)
     earley.parse(debug)
 
-    routes = earley.routes(debug)
-    trees = ParseTrees(routes, len(sentence), debug)
-    print 'Valid parse trees:'
-    print '=================='
-    print trees
+    routes = earley.find_routes(debug)
+    if earley.is_valid_sentence():
+        print '==> Sentence is valid.'
+        trees = ParseTrees(routes, len(sentence), debug)
+        print 'Valid parse trees:'
+        print trees
+    else:
+        print '==> Sentence is invalid.'
 
 if __name__ == '__main__':
     run()

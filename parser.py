@@ -67,19 +67,20 @@ class Parser:
 
     def routes(self, debug):
         self.charts[-1].scan_routes(debug)
-        rn = range(len(self.charts))
-        routes = [list() for i in rn]
-        for i in rn:
-            chart = self.charts[i]
-            routes[i] = []
+        routes = {}
+        for chart in self.charts:
             for row in chart.rows:
                 if row.good:
-                    if not row in routes[i]:
-                        routes[i].append(row)
+                    if row.is_complete():
+                        key = row.rule.lhs
+                        if routes.get(key):
+                            routes[key].append(row)
+                        else:
+                            routes[key] = [row]
 
         if debug:
             print "Scanned 'good' routes:"
-            print '\n'.join('; '.join(str(r) for r in s) for s in routes)
+            print routes
             print "-----------------------"
 
         return routes

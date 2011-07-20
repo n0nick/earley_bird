@@ -36,13 +36,14 @@ class Chart:
                         row.mark_route()
 
 class ChartRow:
-    def __init__(self, rule, dot=0, start=0, parents=[]):
+    def __init__(self, rule, dot=0, start=0, chart=0, parents=[]):
         '''Initialize a chart row, consisting of a rule, a position
            index inside the rule, index of starting chart and
            pointers to parent rows'''
         self.rule = rule
         self.dot = dot
         self.start = start
+        self.chart = chart
         self.parents = parents
         self.good = False # member of a completed route?
 
@@ -52,9 +53,9 @@ class ChartRow:
 
     def __repr__(self):
         '''Nice string representation:
-            <Row <LHS -> RHS *> [start]>'''
+            <Row <LHS -> RHS .> [start]>'''
         rhs = list(self.rule.rhs)
-        rhs.insert(self.dot, '*')
+        rhs.insert(self.dot, '.')
         rule_str = "[{0} -> {1}]".format(self.rule.lhs, ' '.join(rhs))
         return "<Row {0} [{1}]>".format(rule_str, self.start)
 

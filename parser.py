@@ -31,7 +31,7 @@ class Parser:
         if word:
             if word.tags:
                 rule = Rule(word.tags[0], [word.word])
-                chart.add_row(ChartRow(rule, 1, position-1))
+                chart.add_row(ChartRow(rule, 1, position-1, position))
 
     def predict(self, chart, position):
         '''Predict next parse by looking up grammar rules
@@ -41,7 +41,7 @@ class Parser:
             rules = self.grammar[next_cat]
             if rules:
                 for rule in rules:
-                    new = ChartRow(rule, 0, position, [row])
+                    new = ChartRow(rule, 0, position, position, [row])
                     chart.add_row(new)
 
     def complete(self, chart, position):
@@ -52,7 +52,7 @@ class Parser:
                 completed = row.rule.lhs
                 for r in self.charts[row.start].rows:
                     if completed == r.next_category():
-                        new = ChartRow(r.rule, r.dot+1, r.start, [row, r])
+                        new = ChartRow(r.rule, r.dot+1, r.start, position, [row, r])
                         chart.add_row(new)
 
     def parse(self):

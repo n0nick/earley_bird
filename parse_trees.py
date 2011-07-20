@@ -48,13 +48,14 @@ class ParseTrees:
         '''String representation of a list of trees with indexes'''
         return '\n'.join("Parse tree #{0}:\n{1}\n\n".format(i+1, str(self.nodes[i])) for i in range(len(self)))
 
-    def build_nodes(self, roots):
+    def build_nodes(self, roots, start=0):
         nodes = []
         for r in roots:
+            print "{0}\t\t{1}\t{2}\t{3}".format('','','', r)
             children = []
             for right in r.rule.rhs:
                 if self.routes.get(right):
-                    children.extend(self.build_nodes(self.routes[right]))
+                    children.extend(self.build_nodes(self.routes[right], start+1))
                 else: # terminal symbol - a leaf
                     children.append(TreeNode(right))
 

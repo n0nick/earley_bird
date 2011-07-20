@@ -16,7 +16,7 @@ def run():
     # load grammar from file
     try:
         grammar = Grammar.from_file(sys.argv[1])
-    except IOError as e: #TODO: just raise an exception here
+    except IOError as e:
         sys.stderr.write("Error reading file {0}\n".format(sys.argv[1]))
         sys.exit(1)
 

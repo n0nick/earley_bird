@@ -16,6 +16,7 @@ def run():
     # load grammar from file, sentence from arguments
     grammar = Grammar.from_file(sys.argv[1])
     sentence = Sentence.from_string(sys.argv[2])
+
     debug = len(sys.argv)==4 and sys.argv[3] == '--debug'
 
     # run parser
@@ -25,6 +26,7 @@ def run():
     routes = earley.find_routes()
     if earley.is_valid_sentence():
         print '==> Sentence is valid.'
+
         trees = ParseTrees(routes, len(sentence))
         print 'Valid parse trees:'
         print trees

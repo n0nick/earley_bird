@@ -66,11 +66,13 @@ class Parser:
             self.print_charts()
 
     def routes(self, debug):
+        if debug:
+            print "Scanning final routes..."
         self.charts[-1].scan_routes(debug)
 
     def print_charts(self):
         print "Parsing charts:"
         for i in range(len(self.charts)):
-            print "-----------{0}-------------".format(i)
+            print "-----------{0}-----------".format(i)
             print self.charts[i]
-            print "---------------------------".format(i)
+            print "-------------------------".format(i)

@@ -11,21 +11,21 @@ def print_trees(trees):
     for tree in trees:
         print tree
 
-
 def run():
     if len(sys.argv)<3:
-        print "Usage: earley.py <grammar.cfg> <sentence>"
+        print "Usage: earley.py <grammar.cfg> <sentence> [--debug]"
         sys.exit(1)
 
     # load grammar from file, sentence from arguments
     grammar = Grammar.from_file(sys.argv[1])
     sentence = Sentence.from_string(sys.argv[2])
+    debug = len(sys.argv)==4 and sys.argv[3] == '--debug'
 
     # run parser
     earley = Parser(grammar, sentence)
-    earley.parse()
+    earley.parse(debug)
 
-    routes = earley.routes()
+    routes = earley.routes(debug)
     # print results
     # print_trees(trees)
 

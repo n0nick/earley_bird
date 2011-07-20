@@ -43,7 +43,7 @@ class Parser:
                         new = ChartRow(r.rule, r.dot+1, r.start)
                         chart.add_row(new, row)
 
-    def parse(self):
+    def parse(self, debug=False):
         self.init_first_chart()
 
         i = 0
@@ -60,12 +60,17 @@ class Parser:
                 old_length = length
                 length = len(chart)
 
+            i+= 1              
+        
+        if debug:
+            self.print_charts()
+
+    def routes(self, debug):
+        self.charts[-1].scan_routes(debug)
+
+    def print_charts(self):
+        print "Parsing charts:"
+        for i in range(len(self.charts)):
             print "-----------{0}-------------".format(i)
-            print chart
+            print self.charts[i]
             print "---------------------------".format(i)
-
-            i+= 1
-
-    def routes(self):
-        self.charts[-1].scan_routes()
-

@@ -29,8 +29,9 @@ def run():
 
     routes = earley.routes(debug)
     trees = ParseTrees(routes, len(sentence), debug)
-    # print results
-    # print_trees(results)
+    print 'Valid parse trees:'
+    print '=================='
+    print trees
 
 if __name__ == '__main__':
     run()

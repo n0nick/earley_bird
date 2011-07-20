@@ -80,12 +80,13 @@ class Parser:
         if debug:
             print "Scanned 'good' routes:"
             print '\n'.join('; '.join(str(r) for r in s) for s in routes)
+            print "-----------------------"
 
         return routes
 
     def print_charts(self):
         print "Parsing charts:"
         for i in range(len(self.charts)):
-            print "-----------{0}-----------".format(i)
+            print "-----------{0}-------------".format(i)
             print self.charts[i]
             print "-------------------------".format(i)

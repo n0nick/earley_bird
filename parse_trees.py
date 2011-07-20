@@ -6,16 +6,19 @@ from operator import add
 
 class TreeNode:
     def __init__(self, body, children=[]):
+        '''Initialize a tree with body and children'''
         self.body = body
         self.children = children
 
     def __len__(self):
+        '''A length of a tree is its leaves count'''
         if self.is_leaf():
             return 1
         else:
             return reduce(add, [len(child) for child in self.children])
 
     def __str__(self):
+        '''Returns string representation of a tree in bracket notation'''
         st = "[.{0} ".format(self.body)
         if not self.is_leaf():
             st+= ' '.join([str(child) for child in self.children])
@@ -23,6 +26,7 @@ class TreeNode:
         return st
 
     def is_leaf(self):
+        '''A leaf is a childless node'''
         return len(self.children) == 0
 
 class ParseTrees:

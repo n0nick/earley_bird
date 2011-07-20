@@ -1,0 +1,1 @@
+python earley.py input/sample.cfg "time/time<N> flies/fly<N>/fly<V> like/like<P>/like<V> an/an<D> arrow/arrow<N>" --debug

@@ -15,7 +15,7 @@ class Parser:
         self.charts = [Chart([]) for i in range(self.length+1)]
 
     def init_first_chart(self):
-        row = ChartRow(Rule(Parser.GAMMA_SYMBOL, ['S']), 0, 0, 0)
+        row = ChartRow(Rule(Parser.GAMMA_SYMBOL, ['S']), 0, 0)
         self.charts[0].add_row(row)
 
     def prescan(self, chart, position):
@@ -23,7 +23,7 @@ class Parser:
         if word:
             rules = [Rule(tag, [word.word]) for tag in word.tags]
             for rule in rules:
-                chart.add_row(ChartRow(rule, 1, position-1, position))
+                chart.add_row(ChartRow(rule, 1, position-1))
 
     def predict(self, chart, position):
         for row in chart.rows:
@@ -31,7 +31,7 @@ class Parser:
             rules = self.grammar[next_cat]
             if rules:
                 for rule in rules:
-                    new = ChartRow(rule, 0, position, position, [row])
+                    new = ChartRow(rule, 0, position, [row])
                     chart.add_row(new)
 
     def complete(self, chart, position):
@@ -40,7 +40,7 @@ class Parser:
                 completed = row.rule.lhs
                 for r in self.charts[row.start].rows:
                     if completed == r.next_category():
-                        new = ChartRow(r.rule, r.dot+1, r.start, position, [row, r])
+                        new = ChartRow(r.rule, r.dot+1, r.start, [row, r])
                         chart.add_row(new)
 
     def parse(self, debug=False):
@@ -66,9 +66,22 @@ class Parser:
             self.print_charts()
 
     def routes(self, debug):
-        if debug:
-            print "Scanning final routes..."
         self.charts[-1].scan_routes(debug)
+        rn = range(len(self.charts))
+        routes = [list() for i in rn]
+        for i in rn:
+            chart = self.charts[i]
+            routes[i] = []
+            for row in chart.rows:
+                if row.good:
+                    if not row in routes[i]:
+                        routes[i].append(row)
+
+        if debug:
+            print "Scanned 'good' routes:"
+            print '\n'.join('; '.join(str(r) for r in s) for s in routes)
+
+        return routes
 
     def print_charts(self):
         print "Parsing charts:"

@@ -31,11 +31,10 @@ class Chart:
 
 
 class ChartRow:
-    def __init__(self, rule, dot=0, start=0, chart=0, parents=[]):
+    def __init__(self, rule, dot=0, start=0, parents=[]):
         self.rule = rule
         self.dot = dot
         self.start = start
-        self.chart = chart
         self.parents = parents
         self.good = False
 
@@ -70,9 +69,6 @@ class ChartRow:
             self.parents.append(parent)
 
     def mark_route(self, debug=False):
-        if debug:
-            print self
-
         self.good = True
         for parent in self.parents:
             parent.mark_route(debug)

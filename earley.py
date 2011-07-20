@@ -6,10 +6,12 @@ import sys
 from grammar import *
 from sentence import *
 from parser import *
+from parse_trees import *
 
 def print_trees(trees):
-    for tree in trees:
-        print tree
+    if trees:
+        for tree in trees:
+            print tree
 
 def run():
     if len(sys.argv)<3:
@@ -26,8 +28,9 @@ def run():
     earley.parse(debug)
 
     routes = earley.routes(debug)
+    trees = ParseTrees(routes, len(sentence), debug)
     # print results
-    # print_trees(trees)
+    # print_trees(results)
 
 if __name__ == '__main__':
     run()

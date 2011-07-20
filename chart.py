@@ -15,11 +15,9 @@ class Chart:
         st+= '\n</Chart>'
         return st
 
-    def add_row(self, row, parent=None):
+    def add_row(self, row):
         if not row in self.rows:
             self.rows.append(row)
-        if parent:
-            self.rows[self.rows.index(row)].add_parent(parent)
 
     def scan_routes(self, debug=False):
         from parser import Parser
@@ -33,12 +31,12 @@ class Chart:
 
 
 class ChartRow:
-    def __init__(self, rule, dot=0, start=0):
+    def __init__(self, rule, dot=0, start=0, parents=[]):
         self.rule = rule
         self.dot = dot
         self.start = start
         self.good = False
-        self.parents = []
+        self.parents = parents
 
     def __len__(self):
         return len(self.rule)
@@ -47,7 +45,7 @@ class ChartRow:
         rhs = list(self.rule.rhs)
         rhs.insert(self.dot, '*')
         rule_str = "[{0} -> {1}]".format(self.rule.lhs, ' '.join(rhs))
-        return "<Row {0} [{1}]>".format(rule_str, self.start)
+        return "<Row {0} [{1}]>".format(rule_str, self.start, self.parents)
 
     def __cmp__(self, other):
         if len(self) == len(other):

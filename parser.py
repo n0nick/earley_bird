@@ -15,7 +15,7 @@ class Parser:
         self.charts = [Chart([]) for i in range(self.length+1)]
 
     def init_first_chart(self):
-        row = ChartRow(Rule(Parser.GAMMA_SYMBOL, ['S']), 0, 0)
+        row = ChartRow(Rule(Parser.GAMMA_SYMBOL, ['S']), 0, 0, 0)
         self.charts[0].add_row(row)
 
     def prescan(self, chart, position):
@@ -23,7 +23,7 @@ class Parser:
         if word:
             rules = [Rule(tag, [word.word]) for tag in word.tags]
             for rule in rules:
-                chart.add_row(ChartRow(rule, 1, position-1))
+                chart.add_row(ChartRow(rule, 1, position-1, position))
 
     def predict(self, chart, position):
         for row in chart.rows:
@@ -31,7 +31,7 @@ class Parser:
             rules = self.grammar[next_cat]
             if rules:
                 for rule in rules:
-                    new = ChartRow(rule, 0, position, [row])
+                    new = ChartRow(rule, 0, position, position, [row])
                     chart.add_row(new)
 
     def complete(self, chart, position):
@@ -40,7 +40,7 @@ class Parser:
                 completed = row.rule.lhs
                 for r in self.charts[row.start].rows:
                     if completed == r.next_category():
-                        new = ChartRow(r.rule, r.dot+1, r.start, [row, r])
+                        new = ChartRow(r.rule, r.dot+1, r.start, position, [row, r])
                         chart.add_row(new)
 
     def parse(self, debug=False):

@@ -31,12 +31,13 @@ class Chart:
 
 
 class ChartRow:
-    def __init__(self, rule, dot=0, start=0, parents=[]):
+    def __init__(self, rule, dot=0, start=0, chart=0, parents=[]):
         self.rule = rule
         self.dot = dot
         self.start = start
-        self.good = False
+        self.chart = chart
         self.parents = parents
+        self.good = False
 
     def __len__(self):
         return len(self.rule)
@@ -45,7 +46,7 @@ class ChartRow:
         rhs = list(self.rule.rhs)
         rhs.insert(self.dot, '*')
         rule_str = "[{0} -> {1}]".format(self.rule.lhs, ' '.join(rhs))
-        return "<Row {0} [{1}]>".format(rule_str, self.start, self.parents)
+        return "<Row {0} [{1}]>".format(rule_str, self.start)
 
     def __cmp__(self, other):
         if len(self) == len(other):

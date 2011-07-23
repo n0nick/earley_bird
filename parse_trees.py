@@ -31,11 +31,14 @@ class TreeNode:
 
 class ParseTrees:
     def __init__(self, parser):
+        '''Initialize a syntax tree parsing process'''
         self.parser = parser
         self.charts = parser.charts
         self.length = len(parser)
 
-        self.nodes = self.build_nodes(parser.complete_parses)
+        self.nodes = []
+        for root in parser.complete_parses:
+            self.nodes.extend(self.build_nodes(root))
 
     def __len__(self):
         '''Trees count'''
@@ -48,20 +51,23 @@ class ParseTrees:
                                         .format(i+1, str(self.nodes[i]))
                                       for i in range(len(self))))
 
-    def build_nodes(self, roots):
+    def build_nodes(self, root):
+        '''Recursively create subtree for given parse chart row'''
         nodes = []
-        for root in roots:
-            # find subtrees of current symbol
-            if root.completing:
-                children = self.build_nodes([root.completing])
-            else:
-                children = [TreeNode(root.prev_category())]
-            # prepend subtrees of previous symbols
-            prev = root.previous
-            while prev and prev.dot > 0:
-                children[:0] = [self.build_nodes([prev])]
-                prev = prev.previous
-            # create tree node, prepend to final result
-            node = TreeNode(root.rule.lhs, children)
-            nodes[:0] = [node]
+
+        # find subtrees of current symbol
+        if root.completing:
+            children = self.build_nodes(root.completing)
+        else:
+            children = [TreeNode(root.prev_category())]
+
+        # prepend subtrees of previous symbols
+        prev = root.previous
+        while prev and prev.dot > 0:
+            children[:0] = [self.build_nodes(prev)]
+            prev = prev.previous
+
+        # create tree node, prepend to final result
+        node = TreeNode(root.rule.lhs, children)
+        nodes[:0] = [node]
         return nodes

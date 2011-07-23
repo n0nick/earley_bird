@@ -56,8 +56,7 @@ class ChartRow:
         return "<Row {0} [{1}]>".format(rule_str, self.start)
 
     def __cmp__(self, other):
-        '''Two rows are equal if they share the same rule, start
-           and dot'''
+        '''Two rows are equal if they share the same rule, start and dot'''
         if len(self) == len(other):
             if self.dot == other.dot:
                 if self.start == other.start:

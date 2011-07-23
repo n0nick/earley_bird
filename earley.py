@@ -34,9 +34,9 @@ def run():
     if earley.is_valid_sentence():
         print '==> Sentence is valid.'
 
-        # trees = ParseTrees(routes, len(sentence))
-        # print 'Valid parse trees:'
-        # print trees
+        trees = ParseTrees(earley)
+        print 'Valid parse trees:'
+        print trees
     else:
         print '==> Sentence is invalid.'
 

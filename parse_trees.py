@@ -30,15 +30,12 @@ class TreeNode:
         return len(self.children) == 0
 
 class ParseTrees:
-    def __init__(self, routes, length):
-        from parser import Parser
+    def __init__(self, parser):
+        self.parser = parser
+        self.charts = parser.charts
+        self.length = len(parser)
 
-        self.routes = routes
-        self.length = length
-        self.nodes = []
-        self.root = self.routes[Parser.GAMMA_SYMBOL]
-
-        self.nodes = self.build_nodes(self.root)
+        self.nodes = self.build_nodes(parser.complete_parses)
 
     def __len__(self):
         '''Trees count'''
@@ -46,19 +43,22 @@ class ParseTrees:
 
     def __repr__(self):
         '''String representation of a list of trees with indexes'''
-        return '\n'.join("Parse tree #{0}:\n{1}\n\n".format(i+1, str(self.nodes[i])) for i in range(len(self)))
+        return '<Parse Trees>\n{0}</Parse Trees>' \
+                    .format('\n'.join("Parse tree #{0}:\n{1}\n\n" \
+                                        .format(i+1, str(self.nodes[i]))
+                                      for i in range(len(self))))
 
     def build_nodes(self, roots):
         nodes = []
-        for r in roots:
+        for root in roots:
             children = []
-            for right in r.rule.rhs:
-                if self.routes.get(right):
-                    children.extend(self.build_nodes(self.routes[right]))
-                else: # terminal symbol - a leaf
-                    children.append(TreeNode(right))
-
-            node = TreeNode(r.rule.lhs, children)
+            for row in root.siblings:
+                if row.dot > 0:
+                    if row.completing:
+                        children.extend(self.build_nodes([row.completing]))
+                    else:
+                        children.append(TreeNode(row.prev_category()))
+            node = TreeNode(root.rule.lhs, children)
             nodes.append(node)
 
         return nodes

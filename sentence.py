@@ -43,12 +43,11 @@ class Sentence:
            stream format:
               time/time<N> flies/flies<N>/flies<V> like/like<P>/like<V>
               an/an<D> arrow/arrow<N>'''
-        #TODO allow multiple tags, only read first
         #TODO handle Apertium format's beginning ^ and ending $ symbols
 
         # prepare regular expressions to find word and tags
         lemmarex = re.compile('^[^\/]*')
-        tagsrex = re.compile('\<([^\>]*)\>')
+        tagsrex = re.compile('\/[^\<]*\<([^\>]*)\>')
 
         sentence = Sentence()
         words = text.strip().split(' ')

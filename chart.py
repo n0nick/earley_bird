@@ -24,14 +24,24 @@ class Chart:
             self.rows.append(row)
 
 class ChartRow:
-    def __init__(self, rule, dot=0, start=0, parents=[]):
+    def __init__(self, rule, dot=0, start=0, previous=None, completing=None):
         '''Initialize a chart row, consisting of a rule, a position
            index inside the rule, index of starting chart and
            pointers to parent rows'''
         self.rule = rule
         self.dot = dot
         self.start = start
-        self.parents = parents
+        self.completing = completing
+        self.set_previous(previous)
+
+    def set_previous(self, previous):
+        self.previous = previous
+
+        self.siblings = [self]
+        if previous:
+            self.siblings[:0] = [previous]
+            if previous.previous:
+                self.siblings[:0] = [previous.previous]
 
     def __len__(self):
         '''A chart's length is its rule's length'''
@@ -70,10 +80,4 @@ class ChartRow:
         if self.dot > 0:
             return self.rule[self.dot-1]
         return None
-
-    def add_parent(self, parent):
-        '''Add a parent row if it wasn't already added'''
-        if not parent in self.parents:
-            self.parents.append(parent)
-
 

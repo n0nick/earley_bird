@@ -19,6 +19,7 @@ class Parser:
         self.complete_parses = []
 
     def __len__(self):
+        '''Length of input sentence'''
         return len(self.sentence)
 
     def init_first_chart(self):

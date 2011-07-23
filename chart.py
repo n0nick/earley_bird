@@ -52,9 +52,9 @@ class ChartRow:
 
     def __repr__(self):
         '''Nice string representation:
-            <Row <LHS -> RHS *> [start]>'''
+            <Row <LHS -> RHS .> [start]>'''
         rhs = list(self.rule.rhs)
-        rhs.insert(self.dot, '*')
+        rhs.insert(self.dot, '.')
         rule_str = "[{0} -> {1}]".format(self.rule.lhs, ' '.join(rhs))
         return "<Row {0} [{1}]>".format(rule_str, self.start)
 

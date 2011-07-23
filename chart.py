@@ -56,17 +56,20 @@ class ChartRow:
         return 1
 
     def is_complete(self):
-        '''Return true if rule was completely parsed, i.e. the 'dot'
-           position is at the end'''
+        '''Returns true if rule was completely parsed, i.e. the dot is at the end'''
         return len(self) == self.dot
 
     def next_category(self):
-        '''Return next category to parse, the one in the RHS after the
-           position of the 'dot'.'''
+        '''Return next category to parse, i.e. the one after the dot'''
         if self.dot < len(self):
             return self.rule[self.dot]
-        else:
-            return None
+        return None
+
+    def prev_category(self):
+        '''Returns last parsed category'''
+        if self.dot > 0:
+            return self.rule[self.dot-1]
+        return None
 
     def add_parent(self, parent):
         '''Add a parent row if it wasn't already added'''

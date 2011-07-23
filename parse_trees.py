@@ -51,14 +51,17 @@ class ParseTrees:
     def build_nodes(self, roots):
         nodes = []
         for root in roots:
-            children = []
-            for row in root.siblings:
-                if row.dot > 0:
-                    if row.completing:
-                        children.extend(self.build_nodes([row.completing]))
-                    else:
-                        children.append(TreeNode(row.prev_category()))
+            # find subtrees of current symbol
+            if root.completing:
+                children = self.build_nodes([root.completing])
+            else:
+                children = [TreeNode(root.prev_category())]
+            # prepend subtrees of previous symbols
+            prev = root.previous
+            while prev and prev.dot > 0:
+                children[:0] = [self.build_nodes([prev])]
+                prev = prev.previous
+            # create tree node, prepend to final result
             node = TreeNode(root.rule.lhs, children)
-            nodes.append(node)
-
+            nodes[:0] = [node]
         return nodes

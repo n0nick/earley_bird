@@ -57,7 +57,6 @@ class Parser:
                     if completed == r.next_category():
                         new = ChartRow(r.rule, r.dot+1, r.start, r, row)
                         chart.add_row(new)
-                        r.set_previous(new)
 
     def parse(self):
         '''Main Earley's Parser loop'''

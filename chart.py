@@ -32,16 +32,7 @@ class ChartRow:
         self.dot = dot
         self.start = start
         self.completing = completing
-        self.set_previous(previous)
-
-    def set_previous(self, previous):
         self.previous = previous
-
-        self.siblings = [self]
-        if previous:
-            self.siblings[:0] = [previous]
-            if previous.previous:
-                self.siblings[:0] = [previous.previous]
 
     def __len__(self):
         '''A chart's length is its rule's length'''

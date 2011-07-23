@@ -14,10 +14,12 @@ class Parser:
         self.sentence = sentence
         self.debug = debug
 
-        self.length = len(sentence) # input length
         # prepare a chart for every input word
-        self.charts = [Chart([]) for i in range(self.length+1)]
+        self.charts = [Chart([]) for i in range(len(self)+1)]
         self.complete_parses = []
+
+    def __len__(self):
+        return len(self.sentence)
 
     def init_first_chart(self):
         '''Add initial Gamma rule to first chart'''

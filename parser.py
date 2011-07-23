@@ -17,7 +17,7 @@ class Parser:
         self.length = len(sentence) # input length
         # prepare a chart for every input word
         self.charts = [Chart([]) for i in range(self.length+1)]
-        self.routes = None
+        self.complete_parses = []
 
     def init_first_chart(self):
         '''Add initial Gamma rule to first chart'''
@@ -41,7 +41,7 @@ class Parser:
             rules = self.grammar[next_cat]
             if rules:
                 for rule in rules:
-                    new = ChartRow(rule, 0, position, [row])
+                    new = ChartRow(rule, 0, position)
                     chart.add_row(new)
 
     def complete(self, chart, position):
@@ -52,7 +52,7 @@ class Parser:
                 completed = row.rule.lhs
                 for r in self.charts[row.start].rows:
                     if completed == r.next_category():
-                        new = ChartRow(r.rule, r.dot+1, r.start, [row, r])
+                        new = ChartRow(r.rule, r.dot+1, r.start, [row])
                         chart.add_row(new)
 
     def parse(self):
@@ -86,37 +86,14 @@ class Parser:
                 print self.charts[i]
                 print "-------------------------".format(i)
 
-    def find_routes(self):
-        '''Return routes of rules that eventually led to a
-           valid complete parse'''
-        if self.routes: # return from cache
-            return self.routes
-
-        # scan and mark routes in last chart
-        self.charts[-1].scan_routes()
-
-        # collect routes into dictionary organized by LHS symbol
-        self.routes = {}
-        for chart in self.charts:
-            for row in chart.rows:
-                if row.good:
-                    if row.is_complete():
-                        key = row.rule.lhs
-                        if self.routes.get(key):
-                            self.routes[key].append(row)
-                        else:
-                            self.routes[key] = [row]
-
-        # print collected routes for debuggers
-        if self.debug:
-            print "Scanned 'good' routes:"
-            print self.routes
-            print "-----------------------"
-
-        return self.routes
-
     def is_valid_sentence(self):
         '''Returns true if sentence has a complete parse tree'''
-        routes = self.find_routes()
-        return len(routes.keys()) > 0
+        res = False
+        for row in self.charts[-1].rows:
+            if row.start == 0:
+                if row.rule.lhs == self.GAMMA_SYMBOL:
+                    if row.is_complete():
+                        self.complete_parses.append(row)
+                        res = True
+        return res
 

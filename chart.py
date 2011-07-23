@@ -23,18 +23,6 @@ class Chart:
         if not row in self.rows:
             self.rows.append(row)
 
-    def scan_routes(self):
-        '''Scan rows and look for a finite route, i.e. one that
-           started in the first chart with Gamma and completed'''
-        from parser import Parser
-
-        for row in self.rows:
-            rule = row.rule
-            if rule.lhs == Parser.GAMMA_SYMBOL:
-                if row.start == 0:
-                    if row.is_complete():
-                        row.mark_route()
-
 class ChartRow:
     def __init__(self, rule, dot=0, start=0, parents=[]):
         '''Initialize a chart row, consisting of a rule, a position
@@ -44,7 +32,6 @@ class ChartRow:
         self.dot = dot
         self.start = start
         self.parents = parents
-        self.good = False # member of a completed route?
 
     def __len__(self):
         '''A chart's length is its rule's length'''
@@ -86,9 +73,4 @@ class ChartRow:
         if not parent in self.parents:
             self.parents.append(parent)
 
-    def mark_route(self):
-        '''Mark a 'good' route, recursively going up the parents'''
-        self.good = True
-        for parent in self.parents:
-            parent.mark_route()
 

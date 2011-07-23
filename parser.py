@@ -29,8 +29,8 @@ class Parser:
            grammar categories to current chart'''
         word = self.sentence[position-1]
         if word:
-            if word.tags:
-                rule = Rule(word.tags[0], [word.word])
+            rules = [Rule(tag, [word.word]) for tag in word.tags]
+            for rule in rules:
                 chart.add_row(ChartRow(rule, 1, position-1))
 
     def predict(self, chart, position):

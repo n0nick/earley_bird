@@ -17,7 +17,7 @@ class TreeNode:
         else:
             return reduce(add, [len(child) for child in self.children])
 
-    def __str__(self):
+    def __repr__(self):
         '''Returns string representation of a tree in bracket notation'''
         st = "[.{0} ".format(self.body)
         if not self.is_leaf():
@@ -44,7 +44,7 @@ class ParseTrees:
         '''Trees count'''
         return len(self.nodes)
 
-    def __str__(self):
+    def __repr__(self):
         '''String representation of a list of trees with indexes'''
         return '\n'.join("Parse tree #{0}:\n{1}\n\n".format(i+1, str(self.nodes[i])) for i in range(len(self)))
 

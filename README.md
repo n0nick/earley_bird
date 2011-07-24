@@ -26,11 +26,11 @@ An item in ``w`` can be empty, to represent epsilon productions.<br/>
 For info, [see CFG description in Wikipedia](http://en.wikipedia.org/wiki/Context-free_grammar).<br/>
 Earley bird reads a grammar from a text file where every line comprises of such rule. Comments are supported, prefixed by ``#``.<br/>
 Example:<br/>
-```S -> NP VP | VP<br/>
+<code>S -> NP VP | VP<br/>
 NP -> D N | N | N NP<br/>
 VP -> V | V NP | V PP | V NP PP<br/>
 PP -> P NP
-```
+</code>
 
 For an other examples of CFG, see ``sample.cfg`` in the project directory.
 
@@ -45,12 +45,12 @@ The first line in the standard output would be the result of the validity check.
 If the sentence was found invalid using the provided grammar, tough beans, that's it.
 
 If it's valid, you'll also get a list of valid parse trees.<br/>
-```==> Sentence is valid.<br/>
+<code>==> Sentence is valid.<br/>
 Valid parse trees:<br/>
 <Parse Trees><br/>
 Parse tree #1:<br/>
 [.GAMMA [.S [.NP [.N [.time ] ] ] [.VP [.V [.flies ] ] [.PP [.P [.like ] ] [.NP [.D [.an ] ] [.N [.arrow ] ] ] ] ] ] ]<br/>
-</Parse Trees>```
+</Parse Trees></code>
 
 Each tree is printed in the [Qtree format](http://www.ling.upenn.edu/advice/latex/qtree/), and you can then use several tools to use them in documents or generated images from them.<br/>
 [phpSyntaxTree](http://www.ironcreek.net/phpsyntaxtree/) is a recommended tree image generation tool.

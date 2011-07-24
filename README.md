@@ -4,14 +4,14 @@
 
 Earley Bird is a small program that, given a well-formatted context-free grammar, and an input sentence that has already been passed through a part-of-speech tagger program, can tell you whether or not the sentence is valid in this grammar, and if so, output all possible parse trees in a nice format.
 
-This program was written as a final project for a TAU seminar "Advanced Computational Linguistics [0627.2223] taken at spring 2011.<br/>
+This program was written as a final project for a TAU seminar "Advanced Computational Linguistics" [0627.2223] taken at spring 2011.<br/>
 It is based on the algorithm of [the Earley Parser](http://github.github.com/github-flavored-markdown/preview.html) as described on [Speech and Language Processing (Jurafsky, Martin)](http://www.cs.colorado.edu/~martin/slp2.html).<br/>
 The input forms has been chosen and designed so the program would integrate with the [Apertium](http://apertium.org/) open-source machine translation framework.
 
 ### Usage
 
 To run it, just call:<br/>
-```python earley.py <grammar.cfg> <sentence> [--debug]]```
+```python earley.py <grammar.cfg> <sentence> [--debug]```
 
 See 'Input' for instructions on input formats.<br/>
 Use ``--debug`` to get all kinds of secret messages during the process.

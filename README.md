@@ -4,37 +4,38 @@
 
 Earley Bird is a small program that, given a well-formatted context-free grammar, and an input sentence that has already been passed through a part-of-speech tagger program, can tell you whether or not the sentence is valid in this grammar, and if so, output all possible parse trees in a nice format.
 
-This program was written as a final project for a TAU seminar "Advanced Computational Linguistics [0627.2223] taken at spring 2011.
-It is based on the algorithm of [the Earley Parser](http://github.github.com/github-flavored-markdown/preview.html) as described on [Speech and Language Processing (Jurafsky, Martin)](http://www.cs.colorado.edu/~martin/slp2.html).
+This program was written as a final project for a TAU seminar "Advanced Computational Linguistics [0627.2223] taken at spring 2011.<br/>
+It is based on the algorithm of [the Earley Parser](http://github.github.com/github-flavored-markdown/preview.html) as described on [Speech and Language Processing (Jurafsky, Martin)](http://www.cs.colorado.edu/~martin/slp2.html).<br/>
 The input forms has been chosen and designed so the program would integrate with the [Apertium](http://apertium.org/) open-source machine translation framework.
 
 ### Usage
 
-To run it, just call:
+To run it, just call:<br/>
 ```python earley.py <grammar.cfg> <sentence> [--debug]]```
 
-See 'Input' for instructions on input formats.
+See 'Input' for instructions on input formats.<br/>
 Use ``--debug`` to get all kinds of secret messages during the process.
 
 ### Input
 
 To use Earley Bird, one needs two things.
 
-* __Context-free grammar:__  A set of production rules in the form of ``V -> w``, where ``V`` is a single nonterminal symbol, and ``w`` is a list of strings of terminals and/or nonterminals.
-At least one rule with left-hand side ``S`` (for sentence) must exist in order for sentences to be valid.
-An item in ``w`` can be empty, to represent epsilon productions.
-For info, [see CFG description in Wikipedia](http://en.wikipedia.org/wiki/Context-free_grammar).
-Earley bird reads a grammar from a text file where every line comprises of such rule. Comments are supported, prefixed by ``#``.
-Example:
-```S -> NP VP | VP
+* __Context-free grammar:__  A set of production rules in the form of ``V -> w``, where ``V`` is a single nonterminal symbol, and ``w`` is a list of strings of terminals and/or nonterminals.<br/>
+At least one rule with left-hand side ``S`` (for sentence) must exist in order for sentences to be valid.<br/>
+An item in ``w`` can be empty, to represent epsilon productions.<br/>
+For info, [see CFG description in Wikipedia](http://en.wikipedia.org/wiki/Context-free_grammar).<br/>
+Earley bird reads a grammar from a text file where every line comprises of such rule. Comments are supported, prefixed by ``#``.<br/>
+Example:<br/>
+<code>S -> NP VP | VP
 NP -> D N | N | N NP
 VP -> V | V NP | V PP | V NP PP
 PP -> P NP
-```
+</code>
+
 For an other examples of CFG, see ``sample.cfg`` in the project directory.
 
-* __Sentence:__ Earley Bird expects an input of a sentence string with words already parsed for possible parts of speech.
-The input should be formatted using the [Apertium stream format](http://wiki.apertium.org/wiki/Apertium_stream_format), with each word followed by groups of a lemma and a list of tags, e.g.
+* __Sentence:__ Earley Bird expects an input of a sentence string with words already parsed for possible parts of speech.<br/>
+The input should be formatted using the [Apertium stream format](http://wiki.apertium.org/wiki/Apertium_stream_format), with each word followed by groups of a lemma and a list of tags, e.g.<br/>
 ```time/time<N> flies/fly<N>/fly<V> like/like<V>/like<P> an/a<D> arrow/arrow<N>```
 
 ### Output
@@ -44,16 +45,15 @@ The first line in the standard output would be the result of the validity check.
 If the sentence was found invalid using the provided grammar, tough beans, that's it.
 
 If it's valid, you'll also get a list of valid parse trees.
-```
-==> Sentence is valid.
+<code>==> Sentence is valid.
 Valid parse trees:
 <Parse Trees>
 Parse tree #1:
 [.GAMMA [.S [.NP [.N [.time ] ] ] [.VP [.V [.flies ] ] [.PP [.P [.like ] ] [.NP [.D [.an ] ] [.N [.arrow ] ] ] ] ] ] ]
 </Parse Trees>
-```
+</code>
 
-Each tree is printed in the [Qtree format](http://www.ling.upenn.edu/advice/latex/qtree/), and you can then use several tools to use them in documents or generated images from them.
+Each tree is printed in the [Qtree format](http://www.ling.upenn.edu/advice/latex/qtree/), and you can then use several tools to use them in documents or generated images from them.<br/>
 [phpSyntaxTree](http://www.ironcreek.net/phpsyntaxtree/) is a recommended tree image generation tool.
 
 ### License

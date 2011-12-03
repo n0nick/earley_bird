@@ -24,15 +24,14 @@ To use Earley Bird, one needs two things.
 At least one rule with left-hand side ``S`` (for sentence) must exist in order for sentences to be valid.<br/>
 An item in ``w`` can be empty, to represent epsilon productions.<br/>
 For info, [see CFG description in Wikipedia](http://en.wikipedia.org/wiki/Context-free_grammar).<br/>
-Earley bird reads a grammar from a text file where every line comprises of such rule. Comments are supported, prefixed by ``#``.<br/>
+Earley bird reads a grammar from a text file where every line comprises of such rule. Comments are supported, prefixed by ``#``.<br/><br/>
 Example:<br/>
 <code>S -> NP VP | VP<br/>
 NP -> D N | N | N NP<br/>
 VP -> V | V NP | V PP | V NP PP<br/>
 PP -> P NP
-</code>
-
-For an other examples of CFG, see ``sample.cfg`` in the project directory.
+</code><br/><br/>
+For other examples of CFG, see ``sample.cfg`` in the project directory.
 
 * __Sentence:__ Earley Bird expects an input of a sentence string with words already parsed for possible parts of speech.<br/>
 The input should be formatted using the [Apertium stream format](http://wiki.apertium.org/wiki/Apertium_stream_format), with each word followed by groups of a lemma and a list of tags, e.g.<br/>
